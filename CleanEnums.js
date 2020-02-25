@@ -8,6 +8,9 @@
  * Die Whitelist kann mit Räumen und Funktionen gefüllt werden.
  * Wenn sich mindestens ein Eintrag in der Whitelist befindet, 
  * werden nur noch diese Einträge in den Enums verändert.
+ * Beispiel:
+ * let lisWhiteList = ['enum.rooms.wohnzimmer',
+ * ];
  */
 let lisWhiteList = ['',
 ];
