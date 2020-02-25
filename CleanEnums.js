@@ -89,4 +89,4 @@ function cleanEnums(bRemoveNotExisting,bRemoveDuplicated){
 /**
  * Aufruf der Funktion
  */
-cleanEnums(true,true);
+cleanEnums(false,false);
