@@ -1,9 +1,9 @@
 
-let lisWhiteList = ['enum.rooms.testraum',
+let lisWhiteList = ['',
                 ];
 
 
-let bRemoveNotExisting = false;
+let bRemoveNotExisting = true;
 let bRemoveDuplicated = true;
 
 function cleanEnums(){
@@ -19,28 +19,36 @@ function cleanEnums(){
                 let sMessageNotExist = [];
                 let sMessageDuplicate = [];
                 tmpEnumObject.common.members.forEach(m => {
+                    let bPush = false;
                     if(existsObject(m))
-                        newMembers.push(m);
+                        bPush = true;
                     else{
-                        if(bRemoveNotExisting)
+                        if(bRemoveNotExisting){
                             sMessageNotExist.push('Remove not existing state ' + m);
+                            bPush = false;
+                        }
                         else{
-                            newMembers.push(m);
+                            bPush = true;
                             sMessageNotExist.push('Found not existing state ' + m);
                         }
                     }
 
                     if(!newMembers.includes(m))
-                        newMembers.push(m);
+                        bPush = true;
                     else{
-                        if(bRemoveDuplicated)
-                            sMessageDuplicate.push('Remove duplicate state ' + m);
+                        if(bRemoveDuplicated){
+                            if(bPush)
+                                sMessageDuplicate.push('Remove duplicate state ' + m);
+                            bPush = false;
+                        }
                         else{
-                            log('check ' + m);
-                            newMembers.push(m);
-                            sMessageDuplicate.push('Found duplicate state ' + m);
+                            if(bPush)
+                                sMessageDuplicate.push('Found duplicate state ' + m);
+                            bPush = true;
                         }
                     }
+                    if(bPush)
+                        newMembers.push(m);
                     
                 });
                 // Compare size
@@ -52,7 +60,7 @@ function cleanEnums(){
                     log('Check enum ' + enumObject.id);
 
                 sMessageNotExist.forEach(m => log(m));
-                // sMessageDuplicate.forEach(m => log(m));
+                sMessageDuplicate.forEach(m => log(m));
                  if(bClean){
                     // tmpEnumObject.common.members = newMembers;
                     // setObject(enumObject.id,tmpEnumObject,(err) =>{
