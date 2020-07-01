@@ -2,15 +2,18 @@
  * Github - https://github.com/xCruziX/ioBroker-Clean-Enums/blob/master/CleanEnums.js
  * Dieses Skript bereinigt Räume und Funktionen
  * 
-*/         
+*/ 
+
+
+/*
+    Wenn das Skript durchgelaufen ist, wird es beendet
+*/
+let bTerminateAtTheEnd = true;        
 
 /**
  * Die Whitelist kann mit Räumen und Funktionen gefüllt werden.
  * Wenn sich mindestens ein Eintrag in der Whitelist befindet, 
  * werden nur noch diese Einträge in den Enums verändert.
- * Beispiel:
- * let lisWhiteList = ['enum.rooms.wohnzimmer',
- * ];
  */
 let lisWhiteList = ['',
 ];
@@ -69,9 +72,9 @@ function cleanEnums(bRemoveNotExisting,bRemoveDuplicated){
                 let bClean = tmpEnumObject.common.members.length != newMembers.length && (bRemoveNotExisting || bRemoveDuplicated);
                 
                 if(bClean)
-                    log('Clean enum ' + enumObject.id);
+                    log('Clean ' + enumObject.id);
                 else
-                    log('Check enum ' + enumObject.id);
+                    log('Check ' + enumObject.id);
 
                 sMessageNotExist.forEach(m => log(m));
                 sMessageDuplicate.forEach(m => log(m));
@@ -87,9 +90,17 @@ function cleanEnums(bRemoveNotExisting,bRemoveDuplicated){
 
     clean(rooms);
     clean(funct);
+
+    if(bTerminateAtTheEnd){
+        setTimeout(() => {
+            log('Das Skript ' +name + ' ist vorbei und wird beendet.');
+            stopScript();
+        },2000);
+    }
 }
 
 /**
  * Aufruf der Funktion
  */
-cleanEnums(false,false);
+cleanEnums(true,true);
+
